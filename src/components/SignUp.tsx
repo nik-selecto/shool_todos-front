@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react'
-import axios from 'axios';
+import { CommonData } from './types';
+import { makeRequest } from './utils';
 
-export function SignUp() {
+export function SignUp({ setLastReq, setLastRes }: CommonData) {
     let [sendReq, setSendReq] = useState(false);
     let [payload, setPayload] = useState({});
 
@@ -9,10 +10,13 @@ export function SignUp() {
         if (!sendReq) return;
 
         (async () => {
-            const { data } = await axios({
+            await makeRequest({
                 method: 'post',
-                url: 'http://localhost:4000/sign-up',
-                data: payload,
+                endpoint: '/sign-up',
+                body: payload,
+            }, {
+                setLastReq,
+                setLastRes,
             });
         })();
     })

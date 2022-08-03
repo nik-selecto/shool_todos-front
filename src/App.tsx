@@ -7,16 +7,24 @@ import { SignUp } from './components/SignUp';
 import { Login } from './components/Login';
 import { ShowReq } from './components/ShowReq';
 import { ShowRes } from './components/ShowRes';
+import { CommonData } from './components/types';
 
 function App() {
   const location = useLocation();
+  const [lastReq, setLastReq] = useState({});
+  const [lastRes, setLastRes] = useState({});
+
+  const common: CommonData = {
+    setLastReq,
+    setLastRes,
+  };
 
   return (
     <div className="App">
       <Routes>
         <Route path={'/'} element={<Home />} />
-        <Route path={'/sign-up'} element={<SignUp />} />
-        <Route path={'/login'} element={<Login />} />
+        <Route path={'/sign-up'} element={<SignUp {...common}/>} />
+        <Route path={'/login'} element={<Login {...common}/>} />
       </Routes>
       {location.pathname !== '/' && <Link to={'/'}>Home</Link>}
       <br/>
@@ -24,8 +32,8 @@ function App() {
       <br/>
       <br/>
       <hr/>
-      <ShowReq/>
-      <ShowRes/>
+      <ShowReq {...{ req: lastReq }}/>
+      <ShowRes {...{ res: lastRes }}/>
     </div>
   );
 }

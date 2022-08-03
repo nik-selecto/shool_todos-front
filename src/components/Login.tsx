@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import { CommonData } from './types';
+import { LOCALHOST } from './constants';
+import { makeRequest } from './utils';
 
-export function Login() {
+export function Login({ setLastReq, setLastRes }: CommonData) {
     let [sendReq, setSendReq] = useState(false);
     let [payload, setPayload] = useState({});
 
@@ -9,11 +11,16 @@ export function Login() {
         if (!sendReq) return;
 
         (async () => {
-            const { data } = await axios({
+            const method = 'post';
+            const url = LOCALHOST;
+            const body = payload;
+
+            setLastReq({ url, method, body });
+            await makeRequest({
                 method: 'post',
-                url: 'http://localhost:4000/login',
-                data: payload,
-            });
+                endpoint: '/login',
+                body: payload,
+            }, { setLastReq, setLastRes });
         })();
     })
     return <div>
