@@ -9,6 +9,16 @@ app.use(express.json());
 app.use(cors());
 app.use(morgan('dev'));
 
+app.post('/sign-up', async (req, res) => {
+	console.log(req.body);
+
+	res.json({
+		name: 'mock',
+		email: 'mock@test.com',
+		id: 2,
+	});
+});
+
 app.post('/login', async (req, res) => {
 	console.log(req.body);
 
