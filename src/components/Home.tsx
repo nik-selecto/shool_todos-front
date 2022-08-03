@@ -1,20 +1,19 @@
 import { Link } from 'react-router-dom';
+import { CommonData } from './types';
 
-export function Home() {
+export function Home({ user }: CommonData) {
     return <div>
         <h1>Home</h1>
         <hr />
         <ul>
-            <h4>
-                <li>
-                    <Link to={'/sign-up'}>Sign Up</Link>
-                </li>
-            </h4>
-            <h4>
-                <li>
-                    <Link to={'/login'}>Login</Link>
-                </li>
-            </h4>
+            {
+                [
+                    ...(!user
+                        ? [<Link to={'/login'}>Login</Link>, <Link to={'/sign-up'}>Sign Up</Link>]
+                        : [])
+                ]
+                    .map((l, i) => <h4 key={i}>{l}</h4>)
+            }
         </ul>
     </div>;
 }

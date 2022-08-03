@@ -8,7 +8,7 @@ export async function makeRequest(data: {
     body?: Record<string, any>,
     headers?: Record<string, string>,
     query?: Record<string, any>,
-}, options: CommonData) {
+}, options: Pick<CommonData, 'setLastReq' | 'setLastRes'>) {
     const {
         setLastReq,
         setLastRes,
@@ -45,6 +45,6 @@ export async function makeRequest(data: {
             error: error.toString()
         });
 
-        return null;
+        return {};
     };
 }

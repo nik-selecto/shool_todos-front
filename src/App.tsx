@@ -7,33 +7,44 @@ import { SignUp } from './components/SignUp';
 import { Login } from './components/Login';
 import { ShowReq } from './components/ShowReq';
 import { ShowRes } from './components/ShowRes';
-import { CommonData } from './components/types';
+import { CommonData, User } from './components/types';
+import { Logger } from './components/Logger';
+import { Logout } from './components/Logout';
 
 function App() {
   const location = useLocation();
   const [lastReq, setLastReq] = useState({});
   const [lastRes, setLastRes] = useState({});
+  const [logs, _setLogs] = useState<string[]>([]);
+  const [user, setUser] = useState<null | User>(null);
+  const setLogs = (data: string) => _setLogs([data, ...logs]);
 
   const common: CommonData = {
     setLastReq,
     setLastRes,
+    setUser,
+    setLogs,
+    user,
   };
 
   return (
     <div className="App">
+      { user ? <p>You entered as: <pre>{JSON.stringify(user)}</pre></p> : <p>Are you first time here?</p>}
+      <Logout {...common}/>
       <Routes>
-        <Route path={'/'} element={<Home />} />
-        <Route path={'/sign-up'} element={<SignUp {...common}/>} />
-        <Route path={'/login'} element={<Login {...common}/>} />
+        <Route path={'/'} element={<Home {...common}/>} />
+        { user ? <></> : <Route path={'/sign-up'} element={<SignUp {...common} />} /> }
+        { user ? <></> : <Route path={'/login'} element={<Login {...common} />} /> }
       </Routes>
       {location.pathname !== '/' && <Link to={'/'}>Home</Link>}
-      <br/>
-      <br/>
-      <br/>
-      <br/>
-      <hr/>
-      <ShowReq {...{ req: lastReq }}/>
-      <ShowRes {...{ res: lastRes }}/>
+      <br />
+      <br />
+      <br />
+      <br />
+      <hr />
+      <ShowReq {...{ req: lastReq }} />
+      <ShowRes {...{ res: lastRes }} />
+      <Logger {...{ logs }}/>
     </div>
   );
 }

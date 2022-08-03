@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { CommonData } from './types';
 import { makeRequest } from './utils';
 
-export function SignUp({ setLastReq, setLastRes }: CommonData) {
+export function SignUp({ setLastReq, setLastRes, setUser, setLogs }: CommonData) {
     let [sendReq, setSendReq] = useState(false);
     let [payload, setPayload] = useState({});
 
@@ -10,7 +10,7 @@ export function SignUp({ setLastReq, setLastRes }: CommonData) {
         if (!sendReq) return;
 
         (async () => {
-            await makeRequest({
+            const { data } = await makeRequest({
                 method: 'post',
                 endpoint: '/sign-up',
                 body: payload,
@@ -18,8 +18,14 @@ export function SignUp({ setLastReq, setLastRes }: CommonData) {
                 setLastReq,
                 setLastRes,
             });
+
+            if (data?.name && data?.email && data?.id) {
+                setUser(data);
+            } else {
+                setLogs('You missed something in response...');
+            }
         })();
-    })
+    }, [sendReq])
     return <div>
         <h1>Sign Up</h1>
         <hr />

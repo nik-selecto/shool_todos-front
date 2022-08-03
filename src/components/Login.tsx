@@ -3,7 +3,7 @@ import { CommonData } from './types';
 import { LOCALHOST } from './constants';
 import { makeRequest } from './utils';
 
-export function Login({ setLastReq, setLastRes }: CommonData) {
+export function Login({ setLastReq, setLastRes, setUser, setLogs }: CommonData) {
     let [sendReq, setSendReq] = useState(false);
     let [payload, setPayload] = useState({});
 
@@ -16,13 +16,19 @@ export function Login({ setLastReq, setLastRes }: CommonData) {
             const body = payload;
 
             setLastReq({ url, method, body });
-            await makeRequest({
+            const { data } = await makeRequest({
                 method: 'post',
                 endpoint: '/login',
                 body: payload,
             }, { setLastReq, setLastRes });
+
+            if (data?.name && data?.email && data?.id) {
+                setUser(data);
+            } else {
+                setLogs('You missed something in response...');
+            }
         })();
-    })
+    }, [sendReq])
     return <div>
         <h1>Sign Up</h1>
         <hr />
