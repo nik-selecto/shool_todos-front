@@ -49,6 +49,14 @@ app.post('/users/:userId/todos', (req, res) => {
 	});
 });
 
+app.delete('/todos/:todoId', (req, res) => {
+	res.status(204).end();
+});
+
+app.put('/todos/:todoId', (req, res) => {
+	res.json({ ...req.body, id: req.params.todoId });
+});
+
 
 app.listen(4000, () => {
 	console.log('http://localhost:4000');
