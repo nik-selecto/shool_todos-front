@@ -3,8 +3,9 @@ import { Todo } from './Todo';
 import { CommonData } from './types';
 import { makeRequest } from './utils';
 
-export function Todos({ user, setLastReq, setLastRes, setLogs }: CommonData) {
-    const [todos, setTodos] = useState<{ title: string, is_complete: boolean }[]>([]);
+export function Todos(common: CommonData) {
+    const { user, setLastReq, setLastRes, setLogs } = common;
+    const [todos, setTodos] = useState<{ title: string, is_complete: boolean, id: number }[]>([]);
     const [askTodos, setAskTodos] = useState({});
 
     useEffect(() => {
@@ -23,9 +24,8 @@ export function Todos({ user, setLastReq, setLastRes, setLogs }: CommonData) {
 
     return <div>
         <ul>
-            {todos.map((t, i) => <Todo {...{ ...t, key: i }} />)}
+            {todos.map((t, i) => <Todo {...{ ...{ ...common, todo: t}, key: i }} />)}
         </ul>
-        <hr />
         <form onSubmit={(event: any) => {
             event.preventDefault();
 
@@ -40,12 +40,17 @@ export function Todos({ user, setLastReq, setLastRes, setLogs }: CommonData) {
             }, { setLastReq, setLastRes })
                 .then(({ data: { title, id, is_complete } }: any) => {
                     if (!id) {
-                        setLogs('Something wrong in response');
+                        setLogs(JSON.stringify({
+                            error: 'Incorrect response structure',
+                            correctExample: {
+                                id: 1,
+                                title: 'Make todo response like this',
+                                is_complete: false,
+                            },
+                        }));
                     }
 
-                    alert(JSON.stringify({ todos, title, is_complete}, null, 4))
-
-                    setTodos([...todos, { title, is_complete }]);
+                    setTodos([...todos, { title, is_complete, id }]);
                 });
         }}>
             <label>Add new task:</label>

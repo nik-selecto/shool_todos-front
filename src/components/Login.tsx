@@ -31,7 +31,6 @@ export function Login({ setLastReq, setLastRes, setUser, setLogs }: CommonData) 
     }, [sendReq])
     return <div>
         <h1>Login</h1>
-        <hr />
         <form onSubmit={(event: any) => {
             event.preventDefault();
 

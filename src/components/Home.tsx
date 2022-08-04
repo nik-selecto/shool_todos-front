@@ -5,17 +5,19 @@ import { CommonData } from './types';
 export function Home({ user, ...rest }: CommonData) {
     return <div>
         <h1>Home</h1>
-        <hr />
+        {user && <div>
+            <h2>Your todo list:</h2>
+            <Todos {...{ user, ...rest }} />
+        </div>}
         <ul>
             {
                 [
                     ...(!user
                         ? [
-                        <Link to={'/login'}>Login</Link>,
-                        <Link to={'/sign-up'}>Sign Up</Link>
+                            <Link to={'/login'}>Login</Link>,
+                            <Link to={'/sign-up'}>Sign Up</Link>
                         ]
                         : [
-                        <Todos {...{ user, ...rest }}/>
                         ]),
                 ]
                     .map((l, i) => <li><h4 key={i}>{l}</h4></li>)
