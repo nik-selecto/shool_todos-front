@@ -11,3 +11,5 @@ export type CommonData = {
     setLogs: (data: string) => void,
     user: User | null,
 };
+
+export type TodoType = { title: string, is_complete: boolean, id: number };

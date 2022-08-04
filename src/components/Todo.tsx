@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CommonData } from './types';
+import { CommonData, TodoType } from './types';
 import { makeRequest } from './utils';
 
 export function Todo({
@@ -7,8 +7,12 @@ export function Todo({
     setLastReq,
     setLastRes,
     setLogs,
+    rmTodo,
+    setTodos,
 }: CommonData & {
-    todo: { title: string, is_complete: boolean, id: number },
+    todo: TodoType,
+    rmTodo: (todoId: number) => TodoType[],
+    setTodos: (todos: TodoType[]) => void,
 }) {
     console.log(_title);
     const [title, setTitle] = useState(_title);
@@ -17,11 +21,17 @@ export function Todo({
 
 
     return <li key={id}>
-        <span style={{ textDecoration: isComplete ? 'line-through' : 'none' }}>
+        <span key={'title'} style={{
+            textDecoration: isComplete ? 'line-through' : 'none',
+            fontSize: isComplete ? 'inherit': '175%',
+            }}>
             {title}
         </span>
-        <span>
-            <button onClick={() => {
+        <span key={'completeButton'}>
+            <button style={{
+                backgroundColor: isComplete ? 'orange' : 'green',
+                color: 'white',
+            }} onClick={() => {
                 const oldComplete = isComplete;
                 setIsComplete(!isComplete);
                 makeRequest({
@@ -44,7 +54,32 @@ export function Todo({
                             }));
                         }
                     });
-            }}>Complete</button>
+            }}>{isComplete ? 'Reset' : 'Complete'}</button>
+        </span>
+        <span key={'deleteButton'}>
+            <button style={{
+                color: 'white',
+                backgroundColor: 'red',
+            }} onClick={() => {
+                const oldTodos = rmTodo(id);
+
+                makeRequest({
+                    method: 'delete',
+                    endpoint: `/todos/${id}`,
+                }, {
+                    setLastReq,
+                    setLastRes,
+                }).then(({ status }) => {
+                    if (status === 204) return;
+
+                    alert('Server is not answered...');
+                    setTodos(oldTodos);
+                    setLogs(JSON.stringify({
+                        error: 'Incorrect response',
+                        tip: 'On success delete you should set response\' [status] property to [204]',
+                    }, null, 4));
+                });
+            }}>Delete</button>
         </span>
     </li>
 }

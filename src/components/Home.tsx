@@ -20,7 +20,7 @@ export function Home({ user, ...rest }: CommonData) {
                         : [
                         ]),
                 ]
-                    .map((l, i) => <li><h4 key={i}>{l}</h4></li>)
+                    .map((l, i) => <li key={i}><h4>{l}</h4></li>)
             }
         </ul>
     </div>;

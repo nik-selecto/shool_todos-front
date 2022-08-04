@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import { Todo } from './Todo';
-import { CommonData } from './types';
+import { CommonData, TodoType } from './types';
 import { makeRequest } from './utils';
 
 export function Todos(common: CommonData) {
     const { user, setLastReq, setLastRes, setLogs } = common;
-    const [todos, setTodos] = useState<{ title: string, is_complete: boolean, id: number }[]>([]);
+    const [todos, setTodos] = useState<TodoType[]>([]);
     const [askTodos, setAskTodos] = useState({});
 
     useEffect(() => {
@@ -24,7 +24,18 @@ export function Todos(common: CommonData) {
 
     return <div>
         <ul>
-            {todos.map((t, i) => <Todo {...{ ...{ ...common, todo: t}, key: i }} />)}
+            {todos.map((t, i) => <Todo {...{
+                ...{
+                    ...common,
+                    todo: t,
+                    setTodos,
+                    rmTodo: (id: number) => {
+                        setTodos(todos.filter((t) => t.id !== id));
+
+                        return todos;
+                    }
+                }, key: i
+            }} />)}
         </ul>
         <form onSubmit={(event: any) => {
             event.preventDefault();

@@ -33,9 +33,11 @@ app.get('/users/:userId/todos', (req, res) => {
 	res.json([{
 		title: 'Make frontend',
 		is_complete: true,
+		id: 1,
 	}, {
 		title: 'Make mock backend',
 		is_complete: false,
+		id: 2,
 	}]);
 });
 
@@ -43,7 +45,7 @@ app.post('/users/:userId/todos', (req, res) => {
 	res.json({
 		...req.body,
 		is_complete: false,
-		id: 1,
+		id: 11,
 	});
 });
 

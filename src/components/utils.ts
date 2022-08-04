@@ -3,7 +3,7 @@ import { CommonData } from './types';
 import axios from 'axios';
 
 export async function makeRequest(data: {
-    method: 'post' | 'get' | 'put',
+    method: 'post' | 'get' | 'put' | 'delete',
     endpoint: `/${string}`,
     body?: Record<string, any>,
     headers?: Record<string, string>,
