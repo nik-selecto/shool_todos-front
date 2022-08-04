@@ -10,6 +10,7 @@ import { ShowRes } from './components/ShowRes';
 import { CommonData, User } from './components/types';
 import { Logger } from './components/Logger';
 import { Logout } from './components/Logout';
+import { Todos } from './components/Todos';
 
 function App() {
   const location = useLocation();
@@ -29,12 +30,15 @@ function App() {
 
   return (
     <div className="App">
-      { user ? <p>You entered as: <pre>{JSON.stringify(user)}</pre></p> : <p>Are you first time here?</p>}
-      <Logout {...common}/>
+      {user ? <p>You entered as: <pre>{JSON.stringify(user)}</pre></p> : <p>Are you first time here?</p>}
+      <Logout {...common} />
       <Routes>
-        <Route path={'/'} element={<Home {...common}/>} />
-        { user ? <></> : <Route path={'/sign-up'} element={<SignUp {...common} />} /> }
-        { user ? <></> : <Route path={'/login'} element={<Login {...common} />} /> }
+        <Route path={'/'} element={<Home {...common} />} />
+        {(!user ? [
+          <Route path={'/sign-up'} element={<SignUp {...common} />} />,
+          <Route path={'/login'} element={<Login {...common} />} />,
+          <Route path={'/todos'} element={<Todos {...common} />} />,
+        ] : [])}
       </Routes>
       {location.pathname !== '/' && <Link to={'/'}>Home</Link>}
       <br />
@@ -44,7 +48,7 @@ function App() {
       <hr />
       <ShowReq {...{ req: lastReq }} />
       <ShowRes {...{ res: lastRes }} />
-      <Logger {...{ logs }}/>
+      <Logger {...{ logs }} />
     </div>
   );
 }

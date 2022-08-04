@@ -29,6 +29,24 @@ app.post('/login', async (req, res) => {
 	});
 });
 
+app.get('/users/:userId/todos', (req, res) => {
+	res.json([{
+		title: 'Make frontend',
+		is_complete: true,
+	}, {
+		title: 'Make mock backend',
+		is_complete: false,
+	}]);
+});
+
+app.post('/users/:userId/todos', (req, res) => {
+	res.json({
+		...req.body,
+		is_complete: false,
+		id: 1,
+	});
+});
+
 
 app.listen(4000, () => {
 	console.log('http://localhost:4000');

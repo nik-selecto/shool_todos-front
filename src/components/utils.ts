@@ -29,6 +29,7 @@ export async function makeRequest(data: {
             method,
             url,
             data: body,
+            validateStatus(status) { return true; },
         });
 
         setLastRes({
