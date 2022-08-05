@@ -11,6 +11,7 @@ import { CommonData, User } from './components/types';
 import { Logger } from './components/Logger';
 import { Logout } from './components/Logout';
 import { Todos } from './components/Todos';
+import { Settings } from './components/Settings';
 
 function App() {
   const location = useLocation();
@@ -18,6 +19,7 @@ function App() {
   const [lastRes, setLastRes] = useState({});
   const [logs, _setLogs] = useState<string[]>([]);
   const [user, setUser] = useState<null | User>(null);
+  const [background, setBackground] = useState('yellow');
   const setLogs = (data: string) => _setLogs([data, ...logs]);
 
   const common: CommonData = {
@@ -31,9 +33,14 @@ function App() {
   return (
     <div className="App">
 
-      <div id='content-div'>
+      <div id='content-div' style={{
+        backgroundColor: background,
+      }}>
         <Routes>
           <Route path={'/'} element={<Home {...common} />} />
+          <Route path={'/settings'} element={<Settings {...{
+            ...common, background, setBackground
+          }} />} />
           {(user ? [
           ] : [
             <Route path={'/sign-up'} element={<SignUp {...common} />} />,
@@ -43,6 +50,7 @@ function App() {
         </Routes>
 
         {location.pathname !== '/' && <Link to={'/'}>Home</Link>}
+        {user && (location.pathname !== '/settings') && <><br/><Link to={'/settings'}>Settings</Link></>}
         {(user ? [
           <Logout {...common} />
         ] : [

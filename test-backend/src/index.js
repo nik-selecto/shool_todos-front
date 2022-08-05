@@ -57,6 +57,12 @@ app.put('/todos/:todoId', (req, res) => {
 	res.json({ ...req.body, id: req.params.todoId });
 });
 
+app.get('/users/:userId/settings', (req, res) => {
+	res.json({
+		id: 1,
+		background: req.query.background,
+	});
+});
 
 app.listen(4000, () => {
 	console.log('http://localhost:4000');

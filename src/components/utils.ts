@@ -1,6 +1,7 @@
 import { LOCALHOST } from './constants';
 import { CommonData } from './types';
 import axios from 'axios';
+import qs from 'qs';
 
 export async function makeRequest(data: {
     method: 'post' | 'get' | 'put' | 'delete',
@@ -20,9 +21,9 @@ export async function makeRequest(data: {
         query,
         body,
     } = data;
-    const url = `${LOCALHOST}${endpoint}`;
+    const url = `${LOCALHOST}${endpoint}${query ? qs.stringify(query, { addQueryPrefix: true }): ''}`;
 
-    setLastReq({ method, headers, url, query, body });
+    setLastReq({ method, headers, url, body });
 
     try {
         const { data, headers, status } = await axios({

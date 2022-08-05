@@ -2,6 +2,7 @@ export type User = {
     id: string,
     email: string,
     name: string,
+    background_color: string,
 };
 
 export type CommonData = {

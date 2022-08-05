@@ -13,7 +13,6 @@ span * {
 
 
 #content-div {
-  height: 400px;
-  background-color: greenyellow;
+  min-height: 400px;
   padding: 20px 20px;
 }

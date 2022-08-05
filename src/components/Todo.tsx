@@ -76,7 +76,7 @@ export function Todo({
                     setTodos(oldTodos);
                     setLogs(JSON.stringify({
                         error: 'Incorrect response',
-                        tip: 'On success delete you should set response\' [status] property to [204]',
+                        tip: 'On success delete you should response with 204 status code',
                     }, null, 4));
                 });
             }}>Delete</button>
