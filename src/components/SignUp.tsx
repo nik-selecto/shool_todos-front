@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react'
 import { CommonData } from './types';
 import { makeRequest } from './utils';
+import { useNavigate } from 'react-router-dom';
 
 export function SignUp({ setLastReq, setLastRes, setUser, setLogs }: CommonData) {
-    let [sendReq, setSendReq] = useState(false);
+    const initSendReq = {};
+    const navigate = useNavigate();
+    let [sendReq, setSendReq] = useState(initSendReq);
     let [payload, setPayload] = useState({});
 
     useEffect(() => {
-        if (!sendReq) return;
+        if (sendReq === initSendReq) return;
 
         (async () => {
             const { data } = await makeRequest({
@@ -20,7 +23,7 @@ export function SignUp({ setLastReq, setLastRes, setUser, setLogs }: CommonData)
             });
 
             if (data?.name && data?.email && data?.id) {
-                setUser(data);
+                navigate({ pathname: '/login' }, { replace: false });
             } else {
                 setLogs('You missed something in response...');
             }
@@ -37,7 +40,7 @@ export function SignUp({ setLastReq, setLastRes, setUser, setLogs }: CommonData)
 
             if (name && email && password) {
                 setPayload({ name, email, password });
-                setSendReq(true);
+                setSendReq({});
             }
         }}>
             <input type={'text'} name={'name'} placeholder={'name'} />

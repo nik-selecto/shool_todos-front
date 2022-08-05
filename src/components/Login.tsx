@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react';
 import { CommonData } from './types';
 import { LOCALHOST } from './constants';
 import { makeRequest } from './utils';
+import { useNavigate } from 'react-router-dom';
 
-export function Login({ setLastReq, setLastRes, setUser, setLogs }: CommonData) {
+export function Login({ setLastReq, setLastRes, setUser, setLogs }: CommonData) {   const navigate = useNavigate();
     let [sendReq, setSendReq] = useState(false);
     let [payload, setPayload] = useState({});
 
@@ -24,6 +25,7 @@ export function Login({ setLastReq, setLastRes, setUser, setLogs }: CommonData) 
 
             if (data?.name && data?.email && data?.id) {
                 setUser(data);
+                navigate({ pathname: '/' }, { replace: false });
             } else {
                 setLogs('You missed something in response...');
             }
