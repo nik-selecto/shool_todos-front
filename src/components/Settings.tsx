@@ -25,8 +25,8 @@ export function Settings(data: CommonData & {
                     }, {
                         setLastReq,
                         setLastRes,
-                    }).then(({ data: { id } }: any) => {
-                        if (!id) {
+                    }).then(({ data }: any) => {
+                        if (!data?.id) {
                             setBackground(oldColor);
                             setLogs(JSON.stringify({
                                 error: 'Incorrect response',
